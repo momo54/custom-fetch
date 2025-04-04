@@ -1,0 +1,13 @@
+{
+  "name": "comunica-custom-fetch",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@comunica/query-sparql": "^4.1.0",
+    "node-fetch": "^2.6.7"
+  }
+}
