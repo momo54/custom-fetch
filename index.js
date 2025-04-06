@@ -6,7 +6,8 @@ async function main() {
     SELECT ?s ?p ?o WHERE {
       ?s ?p ?o
     } LIMIT 1`, {
-    sources: [ 'https://dbpedia.org/sparql' ],
+    sources: [ 'http://localhost:3000/sparql' ],
+//      sources: [ 'https://dbpedia.org/sparql' ],
   });
   
   // Consume results as a stream (best performance)
