@@ -109,7 +109,7 @@ node proxy.js --port=3000 --target=http://localhost:4001
 Launch query:
 `comunica-sparql http://localhost:3001/sparql http://localhost:3001/sparql -f queries/vendor.sparql`
 
-
+The script `run_test.sh` make it all...
 
 # Well other comunica stuf...
 
