@@ -9,8 +9,8 @@ async function main() {
   const bindingsStream = await myEngine.queryBindings(`
     SELECT ?s ?p ?o WHERE {
       ?s ?p ?o
-    } LIMIT 1`, {
-    sources: [ 'http://localhost:3000/sparql' ],
+    } LIMIT 10`, {
+    sources: [ 'http://localhost:3000/sparql', 'https://query.wikidata.org/sparql' ],
 //      sources: [ 'https://dbpedia.org/sparql' ],
     log: new LoggerPretty({ level: 'debug' }),
   });

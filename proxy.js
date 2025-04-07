@@ -2,12 +2,17 @@ const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const { Buffer } = require('buffer');
 
+// Lire les arguments de la ligne de commande
+// Exemple d'utilisation : node proxy.js --port=4000 --target=https://query.wikidata.org/sparql
+// Exemple d'utilisation : node proxy.js --port=3000 --target=https://dbpedia.org/sparql
+const args = require('minimist')(process.argv.slice(2));
+const PORT = args.port || 3000;
+const TARGET = args.target || 'https://dbpedia.org/sparql';
+
 const app = express();
 
-// Middleware pour parser tous les bodies (text, JSON, etc.)
 app.use(express.text({ type: '*/*' }));
 
-// Middleware pour afficher les headers et le body
 app.use((req, res, next) => {
   console.log('=== Requête entrante ===');
   console.log('Méthode :', req.method);
@@ -17,15 +22,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// Cible vers laquelle on redirige les requêtes
-const TARGET = 'https://dbpedia.org/sparql';
-
 app.use('/sparql', createProxyMiddleware({
   target: TARGET,
   changeOrigin: true,
   logLevel: 'debug',
-
-  // Important : forward body
   onProxyReq: (proxyReq, req, res) => {
     if (req.body) {
       const bodyData = typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
@@ -35,9 +35,6 @@ app.use('/sparql', createProxyMiddleware({
   }
 }));
 
-
-// Lancer le serveur
-const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Proxy lancé sur http://localhost:${PORT}/sparql → ${TARGET}`);
 });
