@@ -80,7 +80,20 @@ npx comunica-sparql \
    LIMIT 5"
 ```
 
-Almost Good...
+Almost Good... Wikidata and DBpedia have restriction with quotas, requiring retry policy with delays... Should run SPARQL endpoint locally to get rid of that...
+
+# Comunica as SPARQL server
+
+`comunica-sparql-http -help`
+
+- Start the server for serving one file (default localhost:3000):
+`comunica-sparql-file-http -p 3001 ./data/vendor1.ttl`
+`comunica-sparql-file-http -p 4001 ./data/vendor2.ttl`
+query it:
+`comunica-sparql http://localhost:3001/sparql http://localhost:3001/sparql -f queries/vendor.sparql`
+
+
+
 
 # comunica
 
