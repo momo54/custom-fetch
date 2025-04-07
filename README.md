@@ -111,7 +111,7 @@ Launch query:
 
 
 
-# comunica
+# Well other comunica stuf...
 
 For federated query processsing just put several sources... `--explain logical` allow to understand what comunica do with the query. 
 
