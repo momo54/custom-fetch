@@ -1,5 +1,9 @@
 const QueryEngine = require('@comunica/query-sparql').QueryEngine;
 
+// import {LoggerVoid} from "@comunica/logger-void";
+// const { LoggerVoid } = require('@comunica/logger-void');
+const {LoggerPretty} = require('@comunica/logger-pretty');
+
 async function main() {
   const myEngine = new QueryEngine();
   const bindingsStream = await myEngine.queryBindings(`
@@ -8,6 +12,7 @@ async function main() {
     } LIMIT 1`, {
     sources: [ 'http://localhost:3000/sparql' ],
 //      sources: [ 'https://dbpedia.org/sparql' ],
+    log: new LoggerPretty({ level: 'debug' }),
   });
   
   // Consume results as a stream (best performance)

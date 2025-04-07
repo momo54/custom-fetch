@@ -35,6 +35,7 @@ app.use('/sparql', createProxyMiddleware({
   }
 }));
 
+
 // Lancer le serveur
 const PORT = 3000;
 app.listen(PORT, () => {
