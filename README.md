@@ -90,7 +90,7 @@ Almost Good... Wikidata and DBpedia have restriction with quotas, requiring retr
 `comunica-sparql-file-http -p 3001 ./data/vendor1.ttl`
 `comunica-sparql-file-http -p 4001 ./data/vendor2.ttl`
 query it:
-`comunica-sparql http://localhost:3001/sparql http://localhost:3001/sparql -f queries/vendor.sparql`
+`comunica-sparql http://localhost:3001/sparql http://localhost:4001/sparql -f queries/vendor.sparql`
 
 # ok now same thing with proxies
 
@@ -102,12 +102,12 @@ comunica-sparql-file-http -p 4001 ./data/vendor2.ttl
 
 Start proxies:
 ```
-node proxy.js --port=4000 --target=http://localhost:3001
-node proxy.js --port=3000 --target=http://localhost:4001
+node proxy.js --port=4000 --target=http://localhost:4001
+node proxy.js --port=3000 --target=http://localhost:3001
 ```
 
 Launch query:
-`comunica-sparql http://localhost:3001/sparql http://localhost:3001/sparql -f queries/vendor.sparql`
+`comunica-sparql http://localhost:3000/sparql http://localhost:4000/sparql -f queries/vendor.sparql`
 
 The script `run_test.sh` make it all...
 

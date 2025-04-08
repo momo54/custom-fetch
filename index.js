@@ -10,8 +10,10 @@ async function main() {
     SELECT ?s ?p ?o WHERE {
       ?s ?p ?o
     } LIMIT 10`, {
-    sources: [ 'http://localhost:3000/sparql', 'https://query.wikidata.org/sparql' ],
+//    sources: [ 'http://localhost:3000/sparql', 'https://query.wikidata.org/sparql' ],
 //      sources: [ 'https://dbpedia.org/sparql' ],
+    sources: [ 'http://localhost:3000/sparql' ],
+
     log: new LoggerPretty({ level: 'debug' }),
   });
   

@@ -9,9 +9,9 @@ comunica-sparql-file-http -p 4001 ./data/vendor2.ttl > logs/endpoint2.log 2>&1 &
 PID2=$!
 
 # Lancer les proxies
-node proxy.js --port=4000 --target=http://localhost:3001 > logs/proxy1.log 2>&1 &
+node proxy.js 3000 http://localhost:3001 > logs/proxy1.log 2>&1 &
 PID3=$!
-node proxy.js --port=3000 --target=http://localhost:4001 > logs/proxy2.log 2>&1 &
+node proxy.js 4000 http://localhost:4001 > logs/proxy2.log 2>&1 &
 PID4=$!
 
 # Attendre un peu pour que tout démarre
@@ -19,7 +19,7 @@ sleep 5
 
 # Lancer la requête
 echo "Lancement de la requête SPARQL..."
-comunica-sparql http://localhost:3001/sparql http://localhost:4001/sparql -f queries/vendor.sparql
+npx comunica-sparql http://localhost:3000/sparql http://localhost:4000/sparql -f queries/vendor.sparql
 
 # Nettoyage : tuer les processus
 echo "Arrêt des serveurs..."

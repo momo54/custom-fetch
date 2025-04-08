@@ -1,40 +1,36 @@
+// launch like this:
+// node proxy.js 3000 http://localhost:3001
+// include dependencies
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
-const { Buffer } = require('buffer');
 
-// Lire les arguments de la ligne de commande
-// Exemple d'utilisation : node proxy.js --port=4000 --target=https://query.wikidata.org/sparql
-// Exemple d'utilisation : node proxy.js --port=3000 --target=https://dbpedia.org/sparql
-const args = require('minimist')(process.argv.slice(2));
-const PORT = args.port || 3000;
-const TARGET = args.target || 'https://dbpedia.org/sparql';
+// récupérer les paramètres depuis la ligne de commande
+const args = process.argv.slice(2);
+const port = parseInt(args[0], 10) || 3000;
+const target = args[1] || 'http://localhost:3001';
 
 const app = express();
 
-app.use(express.text({ type: '*/*' }));
+// create the proxy
+/** @type {import('http-proxy-middleware/dist/types').RequestHandler<express.Request, express.Response>} */
+const exampleProxy = createProxyMiddleware({
+  target: target, // target host with the same base path
+  changeOrigin: true, // needed for virtual hosted sites
+  logLevel: 'debug',
+});
 
+// Ajoute un petit log de chaque requête entrante (avant proxy)
 app.use((req, res, next) => {
-  console.log('=== Requête entrante ===');
-  console.log('Méthode :', req.method);
-  console.log('URL :', req.originalUrl);
-  console.log('Headers :', req.headers);
-  console.log('Body :', req.body);
+  console.log(`[Request] ${req.method} ${req.url}`);
+  console.log(`[Request] Headers: ${JSON.stringify(req.headers)}`);
+  console.log(`[Request] Body: ${JSON.stringify(req.body)}`);
+  console.log(`[Request] Query: ${JSON.stringify(req.query)}`);
   next();
 });
 
-app.use('/sparql', createProxyMiddleware({
-  target: TARGET,
-  changeOrigin: true,
-  logLevel: 'debug',
-  onProxyReq: (proxyReq, req, res) => {
-    if (req.body) {
-      const bodyData = typeof req.body === 'string' ? req.body : JSON.stringify(req.body);
-      proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
-      proxyReq.write(bodyData);
-    }
-  }
-}));
-
-app.listen(PORT, () => {
-  console.log(`Proxy lancé sur http://localhost:${PORT}/sparql → ${TARGET}`);
+// mount `exampleProxy` in web server
+app.use('/', exampleProxy);
+app.listen(port, () => {
+  console.log(`Proxy server is running on port ${port}`);
+  console.log(`Proxying requests to ${target}`);
 });
