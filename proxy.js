@@ -3,6 +3,9 @@
 // include dependencies
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
+const jwt = require('jsonwebtoken');
+const jwksRsa = require('jwks-rsa');
+
 
 // récupérer les paramètres depuis la ligne de commande
 const args = process.argv.slice(2);
@@ -28,8 +31,62 @@ app.use((req, res, next) => {
   next();
 });
 
+// 🔐 Configuration du client JWKS
+const jwksClient = jwksRsa({
+  jwksUri: process.env.JWKS_URI || 'http://localhost:8080/realms/sparql/protocol/openid-connect/certs'
+});
+
+// 🔑 Fonction pour récupérer la clé publique
+function getKey(header, callback) {
+  jwksClient.getSigningKey(header.kid, (err, key) => {
+    if (err) return callback(err);
+    const signingKey = key.getPublicKey();
+    callback(null, signingKey);
+  });
+}
+
+// 🔒 Middleware de vérification du token
+function verifyToken(req, res, next) {
+  if (req.method !== 'POST') return next();
+
+  const auth = req.headers.authorization;
+  const token = auth && auth.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).send('Missing token');
+  }
+
+  jwt.verify(token, getKey, { algorithms: ['RS256'] }, (err, decoded) => {
+    if (err) {
+      return res.status(403).send(`Token verification failed: ${err.message}`);
+    }
+
+    // Stocker les infos décodées si besoin
+    req.user = decoded;
+    next();
+  });
+}
+
+function verifyDummyToken(req, res, next) {
+  const auth = req.headers.authorization;
+  const token = auth && auth.split(' ')[1];
+
+  console.log(`verifyDummyToken: ${req.method} ${req.url} {auth: ${token}}`);
+  if (token !== 'dummy-token') {
+    return res.status(403).send('Invalid token');
+  }
+
+  if (req.method !== 'POST') return next();
+
+  next();
+}
+
+
+//app.use('/', verifyDummyToken, exampleProxy);
+app.use('/', verifyToken, exampleProxy);
+
 // mount `exampleProxy` in web server
-app.use('/', exampleProxy);
+//app.use('/', exampleProxy);
 app.listen(port, () => {
   console.log(`Proxy server is running on port ${port}`);
   console.log(`Proxying requests to ${target}`);

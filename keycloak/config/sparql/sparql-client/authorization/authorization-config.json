@@ -1,0 +1,23 @@
+{
+  "resources": [
+    {
+      "name": "query-dataset-x",
+      "uri": "/ds/query",
+      "scopes": [
+        "query"
+      ],
+      "type": "SPARQL Dataset"
+    }
+  ],
+  "policies": [
+    {
+      "name": "doctor-only-policy",
+      "type": "role",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+         "roles": "[{\"name\": \"doctor\", \"required\": false}]"
+      }
+    }
+  ]
+}

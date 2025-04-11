@@ -11,6 +11,8 @@
     "@comunica/query-sparql": "^4.1.0",
     "express": "^4.21.2",
     "http-proxy-middleware": "^3.0.3",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.2.0",
     "node-fetch": "^2.6.7"
   }
 }

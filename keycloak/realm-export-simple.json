@@ -1,0 +1,34 @@
+{
+  "realm": "sparql",
+  "enabled": true,
+  "clients": [
+    {
+      "clientId": "sparql-client",
+      "secret": "secret123",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true
+    }
+  ],
+  "users": [
+    {
+      "username": "bob",
+      "enabled": true,
+      "email": "bob@example.org",
+      "emailVerified": true,
+      "firstName": "Bob",
+      "lastName": "Tester",
+      "createdTimestamp": 1711612800000,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "bobpwd",
+          "temporary": false
+        }
+      ],
+      "requiredActions": []
+    }
+  ]
+}

@@ -218,3 +218,51 @@ npx comunica-sparql \
 ```
 
 This one works
+
+
+## Launching Keycloack
+
+Start the keycloack server
+
+```
+docker run --rm \
+  -p 8080:8080 \
+  -e KEYCLOAK_ADMIN=admin \
+  -e KEYCLOAK_ADMIN_PASSWORD=admin \
+  -v "$(pwd)/keycloak/config/sparql/realm-export.json:/opt/keycloak/data/import/realm-export.json" \
+  quay.io/keycloak/keycloak:24.0.1 \
+  start-dev --import-realm
+```
+
+Create the policy for alice.
+
+```
+python create_uma_policy.py 
+```
+
+Get an access_token (curl):
+```
+export TOKEN=$(curl -s -X POST "http://localhost:8080/realms/sparql/protocol/openid-connect/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=password" \
+  -d "client_id=sparql-client" \
+  -d "client_secret=secret123" \
+  -d "username=alice" \
+  -d "password=alicepwd" | jq -r .access_token)
+```
+
+
+
+Get an access_token:
+```
+python test_sparql_proxy.py 
+🔐 token for : alice
+eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ3S09XeWRaV3pjY1BLYkUwZENXdWM3bm9HOHhUYkVLRmJNRmgxTFFtNE9RIn0.eyJleHAiOjE3NDQzOTU3ODAsImlhdCI6MTc0NDM5MjE4MCwianRpIjoiOGM5MDY5YzItYWFhMC00MTM4LWJjMWUtZTI5NzljNzA3ZDhhIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9zcGFycWwiLCJzdWIiOiJhOTZlNzgzNC00MDU2LTQ5MWYtYmExNS0xNmRhMWI2ZTNiNzAiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJzcGFycWwtY2xpZW50Iiwic2Vzc2lvbl9zdGF0ZSI6ImQ2OTBkNmQyLWIwODktNGM3ZC05YTM5LWFiYjk0YzAyYWU3ZiIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiZG9jdG9yIl19LCJzY29wZSI6ImVtYWlsIHByb2ZpbGUiLCJzaWQiOiJkNjkwZDZkMi1iMDg5LTRjN2QtOWEzOS1hYmI5NGMwMmFlN2YiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IkFsaWNlIFRlc3RlciIsInByZWZlcnJlZF91c2VybmFtZSI6ImFsaWNlIiwiZ2l2ZW5fbmFtZSI6IkFsaWNlIiwiZmFtaWx5X25hbWUiOiJUZXN0ZXIiLCJlbWFpbCI6ImFsaWNlQGV4YW1wbGUub3JnIn0.T1RT2YY5mHNPPSt0Zpu59U3JwY7mQslb9bMBAunR3-DJaaBLf12XQtELurxXb_oh-ax6TfWO93qUJPn6rXFrTJPv43eFBqtYQh1J1HgoKDTCOtBN0LeEeh8cnl4In9QQK__k9Q_Mj0xEI2i0K_n6TTEFlh-42SEi3CiFSztfDKi33ZupCbxc3mDWkLYBzt22OfX9fMY-M3m2pvbHWDIVjqcVhru66Sv9ihhxqOxjglW3Lc6we2sJ_WVnlJqEB1X-pLlf2VGsFXuiINJ6U6awnaeNU1Ux39Ktrn7GcVQT-YY43Nr2N2QBAUMII3IGh8_QSMogEjnHig4j6bKFSjTHYQ
+🔐 token for : bob
+❌ Token request failed for bob: {"error":"invalid_grant","error_description":"Invalid user credentials"}
+None
+```
+
+```
+export ACCESS_TOKEN=eyJl...
+```
