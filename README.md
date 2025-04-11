@@ -1,3 +1,8 @@
+# install comunica
+
+`npm install -g @comunica/query-sparql`
+`npm install -g @comunica/query-sparql-file`
+
 # Patching fetch-sparql-endpoint with comunica
 
 npm install

@@ -15,7 +15,7 @@ node proxy.js 4000 http://localhost:4001 > logs/proxy2.log 2>&1 &
 PID4=$!
 
 # Attendre un peu pour que tout démarre
-sleep 5
+sleep 10
 
 # Lancer la requête
 echo "Lancement de la requête SPARQL..."
