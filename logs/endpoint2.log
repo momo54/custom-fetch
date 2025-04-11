@@ -1,0 +1,83 @@
+Server running on http://localhost:4001/sparql
+Server worker (22535) running on http://localhost:4001/sparql
+[200] GET to /sparql
+      Requested media type: application/n-quads
+      Received query for service description.
+[200] GET to /sparql
+      Requested media type: application/n-quads
+      Received query for service description.
+[200] POST to /sparql
+      Requested media type: application/sparql-results+json
+      Received query query: SELECT (COUNT(*) AS ?count) WHERE { ?s <http://www.example.com/sameAs> ?product. }
+Worker 22535 got assigned a new query (2).
+[200] POST to /sparql
+      Requested media type: application/sparql-results+json
+      Received query query: SELECT (COUNT(*) AS ?count) WHERE { ?s <http://www.example.com/hasPrice> ?price. }
+Worker 22535 got assigned a new query (3).
+      Resolved to result media type: application/sparql-results+json
+      Resolved to result media type: application/sparql-results+json
+Worker 22535 has completed query 2.
+Worker 22535 has completed query 3.
+[200] POST to /sparql
+      Requested media type: application/sparql-results+json
+      Received query query: SELECT (COUNT(*) AS ?count) WHERE {
+  ?s <http://www.example.com/hasPrice> ?price.
+  FILTER(?price < 60 )
+}
+Worker 22535 got assigned a new query (4).
+      Resolved to result media type: application/sparql-results+json
+Worker 22535 has completed query 4.
+[200] POST to /sparql
+      Requested media type: application/sparql-results+json
+      Received query query: SELECT ?s ?price WHERE {
+  ?s <http://www.example.com/hasPrice> ?price.
+  FILTER(?price < 60 )
+}
+Worker 22535 got assigned a new query (5).
+      Resolved to result media type: application/sparql-results+json
+Worker 22535 has completed query 5.
+[200] POST to /sparql
+      Requested media type: application/sparql-results+json
+      Received query query: SELECT ?s ?product WHERE { ?s <http://www.example.com/sameAs> ?product. }
+Worker 22535 got assigned a new query (6).
+      Resolved to result media type: application/sparql-results+json
+Worker 22535 has completed query 6.
+[200] GET to /sparql
+      Requested media type: application/n-quads
+      Received query for service description.
+[200] POST to /sparql
+      Requested media type: application/sparql-results+json
+      Received query query: SELECT (COUNT(*) AS ?count) WHERE { ?s <http://www.example.com/sameAs> ?product. }
+Worker 22535 got assigned a new query (8).
+      Resolved to result media type: application/sparql-results+json
+Worker 22535 has completed query 8.
+[200] POST to /sparql
+      Requested media type: application/sparql-results+json
+      Received query query: SELECT (COUNT(*) AS ?count) WHERE { ?s <http://www.example.com/hasPrice> ?price. }
+Worker 22535 got assigned a new query (9).
+      Resolved to result media type: application/sparql-results+json
+Worker 22535 has completed query 9.
+[200] POST to /sparql
+      Requested media type: application/sparql-results+json
+      Received query query: SELECT (COUNT(*) AS ?count) WHERE {
+  ?s <http://www.example.com/hasPrice> ?price.
+  FILTER(?price < 60 )
+}
+Worker 22535 got assigned a new query (10).
+      Resolved to result media type: application/sparql-results+json
+Worker 22535 has completed query 10.
+[200] POST to /sparql
+      Requested media type: application/sparql-results+json
+      Received query query: SELECT ?s ?price WHERE {
+  ?s <http://www.example.com/hasPrice> ?price.
+  FILTER(?price < 60 )
+}
+Worker 22535 got assigned a new query (11).
+      Resolved to result media type: application/sparql-results+json
+Worker 22535 has completed query 11.
+[200] POST to /sparql
+      Requested media type: application/sparql-results+json
+      Received query query: SELECT ?s ?product WHERE { ?s <http://www.example.com/sameAs> ?product. }
+Worker 22535 got assigned a new query (12).
+      Resolved to result media type: application/sparql-results+json
+Worker 22535 has completed query 12.

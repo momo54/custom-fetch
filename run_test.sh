@@ -6,7 +6,7 @@ export ACCESS_TOKEN="tagada"
 echo "launching keycloack..."
 
 docker run --rm -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin -v "$(pwd)/keycloak/config/sparql/realm-export.json:/opt/keycloak/data/import/realm-export.json" quay.io/keycloak/keycloak:24.0.1 start-dev --import-realm & PID0=$!
-sleep 20
+sleep 50
 # configure policy for alice
 echo "Create Policy for alice..."
 python create_uma_policy.py
@@ -43,7 +43,10 @@ export ACCESS_TOKEN=$(curl -s -X POST "http://localhost:8080/realms/sparql/proto
 
 # Lancer la requête SPARQL
 echo "Launching a federated SPARQL query (should work)"
-npx comunica-sparql http://localhost:3000/sparql http://localhost:4000/sparql -f queries/vendor.sparql
+npx comunica-sparql -l debug http://localhost:3000/sparql http://localhost:4000/sparql -f queries/vendor.sparql
+
+echo "retry with : npx comunica-sparql -l debug http://localhost:3000/sparql http://localhost:4000/sparql -f queries/vendor.sparql"
+
 
 while true; do
   read -n 1 -s -r -p "press 'q' for stopping all processes: " key
